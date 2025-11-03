@@ -143,7 +143,7 @@ You will see the **results** of the query on the **bottom of the query window**.
 With the data from your SQL database automatically mirrored in OneLake, you can write cross-database queries, joining data from other SQL databases, mirrored databases, warehouses, and lakehouses. All this is currently possible with using T-SQL queries on the SQL analytics endpoint - a SQL-based experience to analyze OneLake data. 
 
 > [!IMPORTANT]
-> Note: Please refresh the **browser** with ctrl + F5 before you move to next step. 
+> Note: Please refresh the **browser** before you move to next step. 
 
 1. To access SQL analytics endpoint, switch to SQL analytics endpoint mode in the top right corner.   
 
