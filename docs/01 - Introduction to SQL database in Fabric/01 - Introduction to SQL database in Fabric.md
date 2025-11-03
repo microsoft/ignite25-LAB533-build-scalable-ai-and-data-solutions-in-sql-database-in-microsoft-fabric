@@ -150,7 +150,9 @@ With the data from your SQL database automatically mirrored in OneLake, you can 
 !["A picture of drop-down list of SQL database and SQL analytics endpoint available in the top right corner of the Database explorer in the Fabric portal"](MirroringSQLAnalyticsSwitching.png)
 
 
-2. In SQL analytics endpoint select a **New SQL query**. Copy and paste the following code into the query window:
+2. In SQL analytics endpoint select a **New SQL query**. 
+!["A picture of SQL analytics endpoint New Query"](SQLAnalyticsNewQuery.png)
+Copy and paste the following code into the query window:
 
     ```
     SELECT * FROM [SalesLT].[Product]
