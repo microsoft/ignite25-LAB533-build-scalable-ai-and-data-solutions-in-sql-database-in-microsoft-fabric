@@ -130,25 +130,7 @@ Let's alter the stored procedure to create a new flow that not only uses vector 
 
 ```
 
-2. Now that you have created the chat completion stored procedure, we need to create a new find_products stored procedure that adds a call to this chat completion endpoint. This new stored procedure contains 2 additional steps that were not found in the original: 
- [IMPORTANT]
- Below code is just for reference only.   
-    a) A section to help package up the results into something we can use in a prompt.
-    
-    ```SQL-nocopy
-    STRING_AGG (CONVERT(NVARCHAR(max),CONCAT( 
-                                    product_name, ' ' ,
-                                    product_color, ' ',
-                                    category_name, ' ', 
-                                    model_name, ' ', 
-                                    product_description )), CHAR(13)))   
-    ```
-
-    b) A section that calls the new chat completion stored procedure and provides it with the products retrieved from the database to help ground the answer.
-
-    ```SQL-nocopy
-    exec [SalesLT].[prompt_answer] @text, @products_json, @answer output;
-    ```
+2. Now that you have created the chat completion stored procedure, we need to create a new find_products stored procedure that adds a call to this chat completion endpoint.  
 
 3. Copy and run the following SQL in a new query window:
 
@@ -256,11 +238,7 @@ After naming the API, click the **green Create button**.
 Once you have selected the **find_products_chat_api stored procedure**, click the **green Load button** on the bottom right of the modal dialog box.
    
 
-1. You will now be on the **GraphQL Query editor page**.
-    !["A picture of the GraphQL Query editor page"](../../img/graphics/2025-01-15_7.11.21_AM.png)
-   
-
-1. Copy/Paste the below code in the GraphQL query editor.
+1. You will now be on the **GraphQL Query editor page**. Copy/Paste the below code in the GraphQL query editor.
 
     ```graphql-notype
     query {

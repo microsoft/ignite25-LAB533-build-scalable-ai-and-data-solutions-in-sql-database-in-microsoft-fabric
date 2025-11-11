@@ -103,7 +103,7 @@ While we're waiting for the data to be loaded, let's explore SQL database editor
 
 ## Section 3: Working with the SQL database in Microsoft Fabric
 
-In this next section, you will be focused on using the Web Editor for SQL database in Microsoft Fabric.
+In this next section, we will be focused on using the Web Editor for SQL database in Microsoft Fabric.
 
 ### Task 3.1: Getting familiar with Database Explorer and Query editor
 
