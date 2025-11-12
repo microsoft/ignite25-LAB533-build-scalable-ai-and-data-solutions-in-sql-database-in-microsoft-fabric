@@ -14,7 +14,7 @@ Let's create a new stored procedure to create a new flow that not only uses vect
    Copy/Paste the below T-SQL Code in a new query window and Run the code:
 
 
-```SQL-notype
+```SQL
     CREATE OR ALTER PROCEDURE [SalesLT].[prompt_answer]
     @user_question nvarchar(max),
     @products nvarchar(max),
@@ -58,10 +58,10 @@ Let's create a new stored procedure to create a new flow that not only uses vect
 
 2. Now that you have created the chat completion stored procedure, we need to create a new find_products_chat stored procedure that adds a call to this chat completion endpoint.  
 
-Copy/Paste the below T-SQL Code in a new query window and Run the code:
+    Copy/Paste the below T-SQL Code in a new query window and Run the code:
 
 
-    ```SQL-notype
+    ```SQL
     CREATE or ALTER procedure [SalesLT].[find_products_chat]
     @text nvarchar(max),
     @top int = 3,
@@ -116,7 +116,7 @@ Copy/Paste the below T-SQL Code in a new query window and Run the code:
 
 3. The last step before we can create a **GraphQL** endpoint is to wrap the new find products chat stored procedure.
 
-Copy/Paste the below T-SQL Code in a new query window and Run the code:
+    Copy/Paste the below T-SQL Code in a new query window and Run the code:
 
 ```SQL
  CREATE or ALTER Procedure SalesLT.[find_products_chat_api]
@@ -133,9 +133,9 @@ Copy/Paste the below T-SQL Code in a new query window and Run the code:
 ```
 
 4. You can test this new  procedure to see how Azure OpenAI will answer a question with product data.
-Copy/Paste the below T-SQL Code in a new query window and Run the code:
+    Copy/Paste the below T-SQL Code in a new query window and Run the code:
 
-    ```SQL-notype
+    ```SQL
     exec SalesLT.find_products_chat_api 'I am looking for a red bike'
     ```
 > [!TIP]
@@ -167,7 +167,7 @@ Once you have selected the **find_products_chat_api stored procedure**, click th
 
 1. You will now be on the **GraphQL Query editor page**. Copy/Paste the below code in the GraphQL query editor.
 
-    ```graphql-notype
+    ```graphql
     query {
         executefind_products_chat_api(text: "I am looking for padded seats that are good on trails") {
                 answer
@@ -187,7 +187,7 @@ Once you have selected the **find_products_chat_api stored procedure**, click th
 
 1. Copy the following code in the the GraphQL editor and see what answer the chat completion endpoint provides!
 
-    ```graphql-notype
+    ```graphql
     query {
         executefind_products_chat_api(text: "Do you have any racing shorts?") {
                 answer
