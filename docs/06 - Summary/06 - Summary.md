@@ -13,6 +13,9 @@ This lab provided an end-to-end experience in designing, building, and operation
 - ✅ GraphQL API for RAG Applications
 - ✅ Power BI Reports Using Semantic Models**
 
+### **Feedback**
+Your feedback is very useful to us and helps us improve our labs for future events. Please click on the link below for a short survey.
+https://aka.ms/ignite25-feedback
 
 ### **Documentation Deep Dives**
 - [SQL Database in Fabric Documentation](https://learn.microsoft.com/fabric/database/)

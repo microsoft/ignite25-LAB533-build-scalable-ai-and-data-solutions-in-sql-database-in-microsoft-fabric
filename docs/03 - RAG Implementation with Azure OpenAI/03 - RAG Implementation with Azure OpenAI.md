@@ -2,8 +2,7 @@
 
 # Build an AI Application using RAG with SQL Database in Fabric​
 
-This module walks through building a Retrieval-Augmented Generation (RAG) application using SQL Database in fabric, and Azure OpenAI. 
-You'll learn how to generate and store vector embeddings for relational data, perform semantic similarity searches using SQL's VECTOR_DISTANCE function. 
+This module walks through the steps to generate and store vector embeddings for relational data, perform semantic similarity searches using SQL's VECTOR_DISTANCE function. 
 
 ## Setup of database credential
 
@@ -18,15 +17,15 @@ Click New Query button to open a query editor window. Copy/Paste the below code 
 
 ```SQL-notype
 
-if not exists(select * from sys.symmetric_keys where [name] = '##MS_DatabaseMasterKey##')
+if not exists(SELECT * FROM sys.symmetric_keys WHERE [name] = '##MS_DatabaseMasterKey##')
 begin
     CREATE master key encryption by password = N'V3RYStr0NGP@ssw0rd!';
 end
 go
-if exists(select * from sys.[database_scoped_credentials] where name = 
+if exists(SELECT * FROM sys.[database_scoped_credentials] where name = 
 '@lab.CloudResourceTemplate(Lab533Resources).Outputs[openAIEndpoint]')
 begin
-	drop database scoped credential [@lab.CloudResourceTemplate(Lab533Resources).Outputs[openAIEndpoint]];
+	DROP database scoped credential [@lab.CloudResourceTemplate(Lab533Resources).Outputs[openAIEndpoint]];
 end
 CREATE database scoped credential [@lab.CloudResourceTemplate(Lab533Resources).Outputs[openAIEndpoint]]
 with identity = 'HTTPEndpointHeaders', secret = '{"api-key": "@lab.CloudResourceTemplate(Lab533Resources).Outputs[openAIPrimaryKey]"}';
@@ -88,14 +87,14 @@ Copy and paste the following code into a new query window.
             @response = @response output;
     END try
     BEGIN catch
-        select 
+        SELECT 
             'SQL' as error_source, 
             error_number() as error_code,
             error_message() as error_message
         return;
     end catch
     if (@retval != 0) begin
-        select 
+        SELECT 
             'OPENAI' as error_source, 
             json_value(@response, '$.result.error.code') as error_code,
             json_value(@response, '$.result.error.message') as error_message,
@@ -244,6 +243,77 @@ Run the below SQL in a new query window.
     | ML Road Seat/Saddle | ML Road Seat/Saddle No Color Saddles ML Road Seat/Saddle 2 Rubber bumpers absorb bumps. | 0.18802953111711573 |
     | HL Mountain Seat/Saddle | HL Mountain Seat/Saddle No Color Saddles HL Mountain Seat/Saddle 2 Anatomic design for a full-day of riding in comfort. Durable leather. | 0.18931317298732764 |
     !["A picture of running Query 3 and getting results outlined in the Query 3 results table"](../../img/graphics/2025-01-15_6.38.06_AM.png)
+
+3. Create a new stored procedure to find products. Copy/Paste the below code in a new query window:
+
+    ```SQL-notype
+    CREATE or ALTER PROCEDURE [SalesLT].[find_products]
+    @text nvarchar(max),
+    @top int = 10,
+    @min_similarity decimal(19,16) = 0.80
+    as
+    if (@text is null) return;
+    DECLARE @retval int, @qv vector(1536);
+    exec @retval = SalesLT.create_embeddings @text, @qv output;
+    if (@retval != 0) return;
+    with vector_results as (
+    SELECT 
+            p.Name as product_name,
+            ISNULL(p.Color,'No Color') as product_color,
+            c.Name as category_name,
+            m.Name as model_name,
+            d.Description as product_description,
+            p.ListPrice as list_price,
+            p.weight as product_weight,
+            vector_distance('cosine', @qv, p.embeddings) AS distance
+    FROM
+        [SalesLT].[Product] p,
+        [SalesLT].[ProductCategory] c,
+        [SalesLT].[ProductModel] m,
+        [SalesLT].[vProductAndDescription] d
+    WHERE p.ProductID = d.ProductID
+    AND p.ProductCategoryID = c.ProductCategoryID
+    AND p.ProductModelID = m.ProductModelID
+    AND p.ProductID = d.ProductID
+    AND d.Culture = 'en')
+    SELECT TOP(@top) product_name, product_color, category_name, model_name, product_description, list_price, product_weight, distance
+    FROM vector_results
+    WHERE (1-distance) > @min_similarity
+    ORDER BY distance asc;
+    GO
+    ```
+
+4. Next, you need to encapsulate the **STORED PROCEDURE** into a wrapper so that the result set can be utilized by our GraphQL endpoint. Using the **WITH RESULT SET** syntax allows you to change the names and data types of the returning result set. This is needed in this example because the usage of sp_invoke_external_rest_endpoint and the return output from extended stored procedures 
+
+    Copy/Paste the below code in a new query window:  
+
+    ```SQL-notype
+    CREATE or ALTER PROCEDURE SalesLT.[find_products_api]
+        @text nvarchar(max)
+        as 
+        exec [SalesLT].find_products @text
+        with RESULT SETS
+        (    
+            (    
+                product_name NVARCHAR(200),    
+                product_color NVARCHAR(50),    
+                category_name NVARCHAR(50),    
+                model_name NVARCHAR(50),    
+                product_description NVARCHAR(max),    
+                list_price INT,    
+                product_weight INT,    
+                distance float    
+            )
+        )
+    GO
+    ```
+
+5. Let us test this newly created procedure to see the results by running the following SQL in a new query window:
+
+    ```SQL-notype
+    exec SalesLT.find_products_api 'I am looking for a red bike'
+    ```
+    !["A picture of running the find_products_api stored procedure"](../../img/graphics/2025-01-14_6.57.09_AM.png)
 
 Congratulations! In this module, you learned how to build a RAG application using SQL database in fabric, and Azure OpenAI. You explored generating vector embeddings for relational data, performing semantic similarity searches with SQL, and integrating natural language responses via GPT-4.1.
 

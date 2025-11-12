@@ -6,86 +6,12 @@ In this section of the lab, you will be deploying a GraphQL API that uses embedd
 
 In this section, we will create a stored procedure that will be used by the GraphQL API for taking in questions and returning products.
 
-## Creating the stored procedure used by the GraphQL API
-
-1. Run the following T-SQL in a new query window:
-
-    ```SQL-notype
-    CREATE or ALTER PROCEDURE [SalesLT].[find_products]
-    @text nvarchar(max),
-    @top int = 10,
-    @min_similarity decimal(19,16) = 0.80
-    as
-    if (@text is null) return;
-    DECLARE @retval int, @qv vector(1536);
-    exec @retval = SalesLT.create_embeddings @text, @qv output;
-    if (@retval != 0) return;
-    with vector_results as (
-    SELECT 
-            p.Name as product_name,
-            ISNULL(p.Color,'No Color') as product_color,
-            c.Name as category_name,
-            m.Name as model_name,
-            d.Description as product_description,
-            p.ListPrice as list_price,
-            p.weight as product_weight,
-            vector_distance('cosine', @qv, p.embeddings) AS distance
-    FROM
-        [SalesLT].[Product] p,
-        [SalesLT].[ProductCategory] c,
-        [SalesLT].[ProductModel] m,
-        [SalesLT].[vProductAndDescription] d
-    WHERE p.ProductID = d.ProductID
-    AND p.ProductCategoryID = c.ProductCategoryID
-    AND p.ProductModelID = m.ProductModelID
-    AND p.ProductID = d.ProductID
-    AND d.Culture = 'en')
-    SELECT TOP(@top) product_name, product_color, category_name, model_name, product_description, list_price, product_weight, distance
-    FROM vector_results
-    WHERE (1-distance) > @min_similarity
-    ORDER BY distance asc;
-    GO
-    ```
-
-1. Next, you need to encapsulate the **STORED PROCEDURE** into a wrapper so that the result set can be utilized by our GraphQL endpoint. Using the **WITH RESULT SET** syntax allows you to change the names and data types of the returning result set. This is needed in this example because the usage of sp_invoke_external_rest_endpoint and the return output from extended stored procedures 
-
-    Run the following T-SQL in a new query window:  
-
-    ```SQL-notype
-    CREATE or ALTER PROCEDURE SalesLT.[find_products_api]
-        @text nvarchar(max)
-        as 
-        exec [SalesLT].find_products @text
-        with RESULT SETS
-        (    
-            (    
-                product_name NVARCHAR(200),    
-                product_color NVARCHAR(50),    
-                category_name NVARCHAR(50),    
-                model_name NVARCHAR(50),    
-                product_description NVARCHAR(max),    
-                list_price INT,    
-                product_weight INT,    
-                distance float    
-            )
-        )
-    GO
-    ```
-
-1. Let us test this newly created procedure to see the results by running the following SQL in a new query window:
-
-    ```SQL-notype
-    exec SalesLT.find_products_api 'I am looking for a red bike'
-    ```
-    !["A picture of running the find_products_api stored procedure"](../../img/graphics/2025-01-14_6.57.09_AM.png)
-
 ## Chat completion 
-Let's alter the stored procedure to create a new flow that not only uses vector similarity search to get products based on a question asked by a user, but to take the results, pass them to Azure OpenAI Chat Completion, and craft an answer they would typically see with an AI chat application.
+Let's create a new stored procedure to create a new flow that not only uses vector similarity search to get products based on a question asked by a user, but to take the results, pass them to Azure OpenAI Chat Completion, and craft an answer they would typically see with an AI chat application.
 
 1. The first step in augmenting our RAG application API is to create a stored procedure that takes the retrieved products and passes them in a prompt to an Azure OpenAI Chat Completion REST endpoint. The prompt consists of telling the endpoint who they are, what products they have to work with, and the exact question that was asked by the user. 
 
-    Copy and run the following SQL in a new query window:
-
+   Copy/Paste the below T-SQL Code in a new query window and Run the code:
 
 
 ```SQL-notype
@@ -130,9 +56,9 @@ Let's alter the stored procedure to create a new flow that not only uses vector 
 
 ```
 
-2. Now that you have created the chat completion stored procedure, we need to create a new find_products stored procedure that adds a call to this chat completion endpoint.  
+2. Now that you have created the chat completion stored procedure, we need to create a new find_products_chat stored procedure that adds a call to this chat completion endpoint.  
 
-3. Copy and run the following SQL in a new query window:
+Copy/Paste the below T-SQL Code in a new query window and Run the code:
 
 
     ```SQL-notype
@@ -165,7 +91,7 @@ Let's alter the stored procedure to create a new flow that not only uses vector 
     AND p.ProductModelID = m.ProductModelID
     AND p.ProductID = d.ProductID
     AND d.Culture = 'en')
-    select
+    SELECT
     top(@top)
     @products_json = (STRING_AGG (CONVERT(NVARCHAR(max),CONCAT( 
                                     product_name, ' ' ,
@@ -188,9 +114,9 @@ Let's alter the stored procedure to create a new flow that not only uses vector 
     GO
     ```
 
-4. The last step before we can create a **GraphQL** endpoint is to wrap the new find products stored procedure.
+3. The last step before we can create a **GraphQL** endpoint is to wrap the new find products chat stored procedure.
 
-Copy and run the following SQL in a new query window.
+Copy/Paste the below T-SQL Code in a new query window and Run the code:
 
 ```SQL
  CREATE or ALTER Procedure SalesLT.[find_products_chat_api]
@@ -206,7 +132,8 @@ Copy and run the following SQL in a new query window.
     GO
 ```
 
-5. You can test this new  procedure to see how Azure OpenAI will answer a question with product data by running the following SQL in a blank query editor in Microsoft Fabric:
+4. You can test this new  procedure to see how Azure OpenAI will answer a question with product data.
+Copy/Paste the below T-SQL Code in a new query window and Run the code:
 
     ```SQL-notype
     exec SalesLT.find_products_chat_api 'I am looking for a red bike'
