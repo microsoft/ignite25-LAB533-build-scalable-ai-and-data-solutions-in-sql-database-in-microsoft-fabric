@@ -63,7 +63,7 @@ This next section of the module will have us alter the  product table to add a n
 
 
 2. Next, you are going to use the External REST Endpoint Invocation procedure (sp_invoke_external_rest_endpoint) to create a stored procedure that will create embeddings for text we supply as an input. 
-Copy and paste the following code into a new query window and click Run button.
+Copy and paste the following T-SQL code into a new query window and click Run button.
  
  ```SQL
 
@@ -112,7 +112,7 @@ Copy and paste the following code into a new query window and click Run button.
 
 ```
 
-Click the run button to create the stored procedure in the database.
+
 
 3. Run the following T-SQL in a new query window to create embeddings for all products in the Products table:
 
