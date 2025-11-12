@@ -17,7 +17,7 @@ Click New Query button to open a query editor window. Copy and Paste the below c
 >
 > **Below code is used to create a database scoped credential with Azure OpenAI endpoint.**
 
-```SQL-notype
+```SQL
 
 if not exists(SELECT * FROM sys.symmetric_keys WHERE [name] = '##MS_DatabaseMasterKey##')
 begin
@@ -53,7 +53,7 @@ This next section of the module will have us alter the  product table to add a n
 >[!TIP]
 > **This code adds a vector datatype as well as chunk column to the Product table. Chunk will store the text we send over to the embeddings REST endpoint.**
 
-```SQL-notype
+```SQL
 
     ALTER TABLE [SalesLT].[Product]
     ADD  embeddings VECTOR(1536), chunk nvarchar(2000);
@@ -65,7 +65,7 @@ This next section of the module will have us alter the  product table to add a n
 2. Next, you are going to use the External REST Endpoint Invocation procedure (sp_invoke_external_rest_endpoint) to create a stored procedure that will create embeddings for text we supply as an input. 
 Copy and paste the following code into a new query window and click Run button.
  
- ```SQL-notype
+ ```SQL
 
     CREATE or ALTER PROCEDURE SalesLT.create_embeddings
     (
@@ -125,7 +125,7 @@ Click the run button to create the stored procedure in the database.
 >
 > **This code will take 40 to 90 seconds to run** 
 
-```SQL-notype
+```SQL
 SET NOCOUNT ON
     DROP TABLE IF EXISTS #MYTEMP 
     DECLARE @ProductID int
@@ -158,7 +158,7 @@ SET NOCOUNT ON
 
 4. To ensure all the embeddings were created, run the following code in a new query window: 
 
-    ```SQL-notype
+    ```SQL
     SELECT COUNT(*) FROM SalesLT.Product WHERE embeddings is null;
     ```
 
@@ -170,7 +170,7 @@ SET NOCOUNT ON
 >
 > You can see that the chunk column is the combination of multiple data points about a product and the embeddings column contains the vector arrays.
 
-```SQL-notype
+```SQL
 
 SELECT TOP 10 chunk, embeddings FROM SalesLT.Product
 ```
@@ -187,7 +187,7 @@ The **VECTOR_DISTANCE** function is a new feature of the SQL Database in fabric 
 
 The syntax is as follows:
 
-```SQL-nocopy-notype
+```SQL-nocopy
 VECTOR_DISTANCE ( distance_metric, vector1, vector2 )
 ```
 
@@ -195,7 +195,7 @@ You will be using this function in samples as well as in the RAG chat applicatio
 
 1. The first query will pose the question "I am looking for a red bike and I dont want to spend a lot". The key words that should help with our similarity search are red, bike, and dont want to spend a lot. Run the following SQL in a new query window:
 
-    ```SQL-notype
+    ```SQL
     DECLARE @search_text nvarchar(max) = 'I am looking for a red bike and I dont want to spend a lot'
     DECLARE @search_vector vector(1536)
     exec SalesLT.create_embeddings @search_text, @search_vector output;
@@ -223,7 +223,7 @@ Run the below SQL in a new query window.
 
     
 
-    ```SQL-notype
+    ```SQL
     DECLARE @search_text nvarchar(max) = 'Do you sell any padded seats that are good on trails?'
     DECLARE @search_vector vector(1536)
     exec SalesLT.create_embeddings @search_text, @search_vector output;
@@ -248,7 +248,7 @@ Run the below SQL in a new query window.
 
 3. Create a new stored procedure to find products. Copy and Paste the below code in a new query window and click Run:
 
-    ```SQL-notype
+    ```SQL
     CREATE or ALTER PROCEDURE [SalesLT].[find_products]
     @text nvarchar(max),
     @top int = 10,
@@ -289,7 +289,7 @@ Run the below SQL in a new query window.
 
     Copy and Paste the below code in a new query window and click Run:  
 
-    ```SQL-notype
+    ```SQL
     CREATE or ALTER PROCEDURE SalesLT.[find_products_api]
         @text nvarchar(max)
         as 
@@ -312,7 +312,7 @@ Run the below SQL in a new query window.
 
 5. Let us test this newly created procedure to see the results by running the following SQL in a new query window:
 
-    ```SQL-notype
+    ```SQL
     exec SalesLT.find_products_api 'I am looking for a red bike'
     ```
     !["A picture of running the find_products_api stored procedure"](../../img/graphics/2025-01-14_6.57.09_AM.png)
