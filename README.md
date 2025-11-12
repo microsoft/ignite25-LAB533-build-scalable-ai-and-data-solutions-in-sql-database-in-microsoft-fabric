@@ -33,25 +33,25 @@ This lab is organized into five progressive modules:
 - Understand SQL analytics endpoints and automatic OneLake mirroring
 - Learn about database replication monitoring
 
-### 🤖 [Module 2: Copilot Capabilities for SQL Database](./02%20-%20Copilot%20capabilities%20for%20SQL%20database%20in%20Microsoft%20Fabric/)
+### 🤖 [Module 2: Copilot Capabilities for SQL Database](./docs/02%20-%20Copilot%20capabilities%20for%20SQL%20database%20in%20Microsoft%20Fabric/)
 - Use AI-powered query assistance and auto-suggestions
 - Implement natural language to SQL (NL2SQL) conversion
 - Leverage error fixing and query explanation features
 - Explore different Copilot interaction modes
 
-### 🔍 [Module 3: RAG Implementation with Azure OpenAI](./03%20-%20RAG%20Implementation%20with%20Azure%20OpenAI/)
+### 🔍 [Module 3: RAG Implementation with Azure OpenAI](./docs/03%20-%20RAG%20Implementation%20with%20Azure%20OpenAI/)
 - Create vector embeddings for relational data using Azure OpenAI
 - Implement semantic similarity search with `VECTOR_DISTANCE` function
 - Build stored procedures for intelligent product recommendations
 - Set up database scoped credentials for secure Azure OpenAI access
 
-### 🌐 [Module 4: GraphQL API for RAG Applications](./04%20-%20GraphQL%20API%20for%20RAG%20Application/)
+### 🌐 [Module 4: GraphQL API for RAG Applications](./docs/04%20-%20GraphQL%20API%20for%20RAG%20Application/)
 - Design GraphQL APIs that utilize vector similarity search
 - Create stored procedures optimized for API consumption
 - Implement chat completion integration for natural language responses
 - Generate client code for application integration
 
-### 📊 [Module 5: Power BI Reports Using Semantic Models](./05%20-%20PowerBI%20report%20using%20semantic%20model/)
+### 📊 [Module 5: Power BI Reports Using Semantic Models](./docs/05%20-%20PowerBI%20report%20using%20semantic%20model/)
 - Create semantic models from SQL analytics endpoints
 - Build interactive reports using Power BI with Copilot assistance
 - Implement geographic sales distribution and analytical insights
