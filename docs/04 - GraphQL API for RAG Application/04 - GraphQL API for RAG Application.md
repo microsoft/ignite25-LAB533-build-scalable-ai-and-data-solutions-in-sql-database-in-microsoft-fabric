@@ -167,7 +167,7 @@ Once you have selected the **find_products_chat_api stored procedure**, click th
 
 1. You will now be on the **GraphQL Query editor page**. Copy/Paste the below code in the GraphQL query editor.
 
-    ```graphql
+    ```GraphQL
     query {
         executefind_products_chat_api(text: "I am looking for padded seats that are good on trails") {
                 answer
@@ -187,7 +187,7 @@ Once you have selected the **find_products_chat_api stored procedure**, click th
 
 1. Copy the following code in the the GraphQL editor and see what answer the chat completion endpoint provides!
 
-    ```graphql
+    ```GraphQL
     query {
         executefind_products_chat_api(text: "Do you have any racing shorts?") {
                 answer
