@@ -1,8 +1,10 @@
 ![](https://raw.githubusercontent.com/microsoft/sqlworkshops/master/graphics/microsoftlogo.png)
 
-# Build an AI Application using RAG with SQL Database in Fabric​
+# RAG Implementation with SQL Database in Fabric​
 
 This module walks through the steps to generate and store vector embeddings for relational data, perform semantic similarity searches using SQL's VECTOR_DISTANCE function. 
+
+## Setting up SQL Database in Fabric for Semantic Retrieval using Vector
 
 ## Setup of database credential
 
@@ -10,7 +12,7 @@ A database scoped credential is a record in the database that contains authentic
 
 Open the database that you created in the first module. 
 
-Click New Query button to open a query editor window. Copy/Paste the below code and click Run button.
+Click New Query button to open a query editor window. Copy and Paste the below code and click Run button.
 > [!TIP]
 >
 > **Below code is used to create a database scoped credential with Azure OpenAI endpoint.**
@@ -44,9 +46,9 @@ Embeddings created and stored in the SQL database in Microsoft Fabric during thi
 
 ### Preparing the database and creating embeddings
 
-This next section of the module will have you alter the  product table to add a new vector datatype column. You will then use a stored procedure to create embeddings for the products and store the vector arrays in that column.
+This next section of the module will have us alter the  product table to add a new vector type column. we will then use a stored procedure to create embeddings for the products and store the vector arrays in that column.
 
-1. In a new query window copy and paste the following T-SQL:
+1. Copy and Paste the below T-SQL code to a new SQL query window and click Run button:
 
 >[!TIP]
 > **This code adds a vector datatype as well as chunk column to the Product table. Chunk will store the text we send over to the embeddings REST endpoint.**
@@ -57,11 +59,11 @@ This next section of the module will have you alter the  product table to add a 
     ADD  embeddings VECTOR(1536), chunk nvarchar(2000);
 ```
 
-Click the run button
-    !["A picture of clicking the run button on the query sheet for adding 2 columns to the product table"](../../img/graphics/2025-01-10_1.30.19_PM.png)
+!["A picture of clicking the run button on the query sheet for adding 2 columns to the product table"](../../img/graphics/2025-01-10_1.30.19_PM.png)
+
 
 2. Next, you are going to use the External REST Endpoint Invocation procedure (sp_invoke_external_rest_endpoint) to create a stored procedure that will create embeddings for text we supply as an input. 
-Copy and paste the following code into a new query window.
+Copy and paste the following code into a new query window and click Run button.
  
  ```SQL-notype
 
@@ -244,7 +246,7 @@ Run the below SQL in a new query window.
     | HL Mountain Seat/Saddle | HL Mountain Seat/Saddle No Color Saddles HL Mountain Seat/Saddle 2 Anatomic design for a full-day of riding in comfort. Durable leather. | 0.18931317298732764 |
     !["A picture of running Query 3 and getting results outlined in the Query 3 results table"](../../img/graphics/2025-01-15_6.38.06_AM.png)
 
-3. Create a new stored procedure to find products. Copy/Paste the below code in a new query window:
+3. Create a new stored procedure to find products. Copy and Paste the below code in a new query window and click Run:
 
     ```SQL-notype
     CREATE or ALTER PROCEDURE [SalesLT].[find_products]
@@ -285,7 +287,7 @@ Run the below SQL in a new query window.
 
 4. Next, you need to encapsulate the **STORED PROCEDURE** into a wrapper so that the result set can be utilized by our GraphQL endpoint. Using the **WITH RESULT SET** syntax allows you to change the names and data types of the returning result set. This is needed in this example because the usage of sp_invoke_external_rest_endpoint and the return output from extended stored procedures 
 
-    Copy/Paste the below code in a new query window:  
+    Copy and Paste the below code in a new query window and click Run:  
 
     ```SQL-notype
     CREATE or ALTER PROCEDURE SalesLT.[find_products_api]
