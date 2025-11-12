@@ -315,6 +315,6 @@ Run the below SQL in a new query window.
     ```
     !["A picture of running the find_products_api stored procedure"](../../img/graphics/2025-01-14_6.57.09_AM.png)
 
-Congratulations! In this module, you learned how to build a RAG application using SQL database in fabric, and Azure OpenAI. You explored generating vector embeddings for relational data, performing semantic similarity searches with SQL, and integrating natural language responses via GPT-4.1.
+Congratulations! In this module, you learned how to build a RAG application using SQL database in fabric, and Azure OpenAI. You explored generating vector embeddings for relational data, performing semantic similarity searches with SQL.
 
-In the next module we would explore GraphQL API that uses the SQL database that we created in previous module to retrieve data.
+In the next module we would explore natural language responses via GPT-4.1 and create GraphQL API to retrieve data.
