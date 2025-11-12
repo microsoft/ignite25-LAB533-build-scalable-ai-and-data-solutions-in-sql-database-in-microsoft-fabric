@@ -103,7 +103,7 @@ Copilot might not show the right results the first time. Please ask the same que
 1. Another way to use Copilot is to ask it to get results for you. Open the new query window. Paste the following question in the Copilot chat box and click on **Send** button
 
 >[!IMPORTANT]
-Copilot might not show the right results the first time. Please ask the same question again.
+If you don't get an answer from Copilot, please ask the same question again.
 
    ```
    What is the most sold product?
@@ -122,7 +122,7 @@ Copilot might not show the right results the first time. Please ask the same que
    
 2. Paste the following question in the **Copilot** chat box and click on **Send** button.
 >[!IMPORTANT]
-Copilot might not show the right results the first time. Please ask the same question again.
+If you don't get an answer from Copilot, please ask the same question again.
 
    ```
    Create a view in the SalesLT schema using this query and execute it.
