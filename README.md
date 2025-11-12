@@ -27,7 +27,7 @@ By completing this lab, you will:
 
 This lab is organized into five progressive modules:
 
-### 🚀 [Module 1: Introduction to SQL Database in Fabric](./01%20-%20Introduction%20to%20SQL%20database%20in%20Fabric/)
+### 🚀 [Module 1: Introduction to SQL Database in Fabric](./docs/01%20-%20Introduction%20to%20SQL%20database%20in%20Fabric/)
 - Set up Microsoft Fabric workspace and SQL database
 - Load sample data and explore the database editor experience
 - Understand SQL analytics endpoints and automatic OneLake mirroring
