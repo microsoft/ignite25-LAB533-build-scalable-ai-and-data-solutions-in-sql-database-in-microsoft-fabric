@@ -121,6 +121,7 @@ To begin the lab:
 
 | Resources          | Links                             | Description        |
 |:-------------------|:----------------------------------|:-------------------|
+| Ignite 2025 Next Steps | [https://aka.ms/Ignite25-Next-Steps](https://aka.ms/Ignite25-Next-Steps?ocid=ignite25_nextsteps_cnl) | Links to all repos for Ignite 2025 Sessions |
 | What is Microsoft Fabric? | [https://aka.ms/WhatIsMicrosoftFabric](https://aka.ms/WhatIsMicrosoftFabric) | Overview of Microsoft Fabric |
 | Get started with Microsoft Fabric | [https://aka.ms/MicrosoftFabric](https://aka.ms/MicrosoftFabric)| Microsoft Fabric Learning Path |
 | Learn at Ignite | [https://aka.ms/LearnAtIgnite](https://aka.ms/LearnAtIgnite?ocid=ignite25_nextsteps_github_cnl) | Continue learning on Microsoft Learn |
