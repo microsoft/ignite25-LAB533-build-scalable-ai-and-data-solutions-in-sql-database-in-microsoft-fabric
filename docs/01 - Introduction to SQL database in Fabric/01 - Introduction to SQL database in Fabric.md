@@ -40,7 +40,7 @@ Using a web browser of your choice, please navigate to this `https://app.fabric.
 1. Click a **New Workspace tile** on the  mid-left side of the screen. 
 ![A picture of the Microsoft Fabric developer experience Home Page](NewWorkspace.png)
    
-2. Enter a unique Name and hit apply
+2. Please enter ```Fabric@lab.LabInstance.Id``` as the Fabric workspace name.
 ![A picture of the Create a workspace blade on the right side of the page](CreateWorkspace.png) 
     
 
