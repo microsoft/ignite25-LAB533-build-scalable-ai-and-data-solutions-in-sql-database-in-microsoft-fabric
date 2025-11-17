@@ -22,7 +22,7 @@ Let's create a new stored procedure to create a new flow that not only uses vect
 
     AS
 
-    DECLARE @url nvarchar(4000) = '@lab.CloudResourceTemplate(Lab533Resources).Outputs[openAIEndpoint]openai/deployments/gpt-4/chat/completions?api-version=2024-06-01';
+    DECLARE @url nvarchar(4000) = '@lab.CloudResourceTemplate(Lab533Resources).Outputs[openAIEndpoint]openai/deployments/gpt-4.1/chat/completions?api-version=2024-06-01';
     DECLARE @payload nvarchar(max) = N'{
         "messages": [
             {
@@ -201,4 +201,4 @@ The API you just created could now be handed off to an application developer to 
 Here is a fully functioning Chat application for you to try
 [Chat App](https://fabcon-euro.azurewebsites.net/)
 
-Congratulations!! In this module, you  learned how to build a RAG application using SQL database in fabric, and Azure OpenAI. You explored generating vector embeddings for relational data, performing semantic similarity searches with SQL, and integrating natural language responses via GPT-4.0.
+Congratulations!! In this module, you  learned how to build a RAG application using SQL database in fabric, and Azure OpenAI. You explored generating vector embeddings for relational data, performing semantic similarity searches with SQL, and integrating natural language responses via GPT-4.1.
