@@ -6,6 +6,8 @@
 
 ## 🔥LAB533: Develop Scalable Data Solutions with SQL Database in Microsoft Fabric
 
+Download the session's slide [deck here](https://igniteanalyticspreday.blob.core.windows.net/slidedeck/Ignite25-Labs-SQL%20in%20Fabric.pptx)
+
 Welcome to the comprehensive hands-on lab for Microsoft Ignite 2025! This lab will guide you through building end-to-end AI-ready applications using SQL database in Microsoft Fabric as the core data backbone.
 
 ## Lab Overview
